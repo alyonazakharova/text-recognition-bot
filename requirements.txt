@@ -10,7 +10,7 @@ Pillow==9.0.1
 regex==2022.1.18
 six==1.16.0
 torch==1.10.2
-torchvision==0.11.3
+torchvision~=0.11.2
 tqdm==4.62.3
 typing-extensions==4.1.1
 # BOT API REQ
@@ -20,3 +20,5 @@ idna==3.3
 pyTelegramBotAPI==4.4.0
 requests==2.27.1
 urllib3==1.26.8
+
+aiogram~=2.19

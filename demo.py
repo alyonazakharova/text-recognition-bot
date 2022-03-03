@@ -1,17 +1,17 @@
-import asyncio
-import string
 import argparse
+import string
 
 import torch
 import torch.backends.cudnn as cudnn
-import torch.utils.data
 import torch.nn.functional as F
+import torch.utils.data
 
-from utils import CTCLabelConverter, AttnLabelConverter
 from dataset import RawDataset, AlignCollate
 from model import Model
+from utils import CTCLabelConverter, AttnLabelConverter
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 def demo(opt):
     """ model configuration """
@@ -24,23 +24,23 @@ def demo(opt):
     if opt.rgb:
         opt.input_channel = 3
     model = Model(opt)
-    print('model input parameters',
-          opt.imgH,
-          opt.imgW,
-          opt.num_fiducial,
-          opt.input_channel,
-          opt.output_channel,
-          opt.hidden_size,
-          opt.num_class,
-          opt.batch_max_length,
-          opt.Transformation,
-          opt.FeatureExtraction,
-          opt.SequenceModeling,
-          opt.Prediction)
+    # print('model input parameters',
+    #       opt.imgH,
+    #       opt.imgW,
+    #       opt.num_fiducial,
+    #       opt.input_channel,
+    #       opt.output_channel,
+    #       opt.hidden_size,
+    #       opt.num_class,
+    #       opt.batch_max_length,
+    #       opt.Transformation,
+    #       opt.FeatureExtraction,
+    #       opt.SequenceModeling,
+    #       opt.Prediction)
     model = torch.nn.DataParallel(model).to(device)
 
     # load model
-    print('loading pretrained model from %s' % opt.saved_model)
+    # print('loading pretrained model from %s' % opt.saved_model)
     model.load_state_dict(torch.load(opt.saved_model, map_location=device))
 
     # prepare data. two demo images from https://github.com/bgshih/crnn#run-demo
@@ -89,7 +89,7 @@ def demo(opt):
             dashed_line = '-' * 80
             head = f'{"image_path":25s}\t{"predicted_labels":25s}\tconfidence score'
 
-            print(f'{dashed_line}\n{head}\n{dashed_line}')
+            # print(f'{dashed_line}\n{head}\n{dashed_line}')
             log.write(f'{dashed_line}\n{head}\n{dashed_line}\n')
 
             preds_prob = F.softmax(preds, dim=2)
@@ -103,14 +103,15 @@ def demo(opt):
                 # calculate confidence score (= multiply of pred_max_prob)
                 confidence_score = pred_max_prob.cumprod(dim=0)[-1]
 
-                print(f'{img_name:25s}\t{pred:25s}\t{confidence_score:0.4f}')
+                # print(f'{img_name:25s}\t{pred:25s}\t{confidence_score:0.4f}')
                 log.write(f'{img_name:25s}\t{pred:25s}\t{confidence_score:0.4f}\n')
 
             log.close()
+    return pred
 
 
 # if __name__ == '__main__':
-def recognitionImage():
+def recognize_image():
     parser = argparse.ArgumentParser()
     parser.add_argument('--image_folder', default='demo_image/', help='path to image_folder which contains text images') #
 
@@ -145,9 +146,9 @@ def recognitionImage():
     """ vocab / character number configuration """
     if opt.sensitive:
         opt.character = string.printable[:-6]  # same with ASTER setting (use 94 char).
-    print("opt ->", opt)
+    # print("opt ->", opt)
     cudnn.benchmark = True
     cudnn.deterministic = True
     opt.num_gpu = torch.cuda.device_count()
 
-    demo(opt)
+    return demo(opt)
