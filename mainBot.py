@@ -15,19 +15,18 @@ async def get_text_messages(message: types.Message):
     elif message.text == "/help":
         await message.answer("Отправь мне картинку с текстом, а я скажу, что там написано!")
     else:
-        await message.answer("Я пока что глупый и ничего не понял. Напиши /help.")
+        await message.answer("Я ничего не понимаю. Напиши /help.")
 
 
 @dp.message_handler(content_types=['photo'])
 async def handle_docs_photo(message: types.Message):
     # /Users/artem.ustinov/Downloads/deep-text-recognition-benchmark/demo_image/test.jpeg
-    await message.photo[-1].download('/Users/alenazaharova/git/text-recognition-bot/demo_image/test.jpeg')
+    await message.photo[-1].download('/Users/artem.ustinov/Documents/OLENA/text-recognition-bot/demo_image/test.jpeg')
 
     await message.answer("Секундочку, надо немного подумать.")
 
     result = recognize_image()
-
-    await message.reply("Думаю, тут написано " + result)
+    await message.reply(f'Думаю, тут написано {result[0]} с точностью' + f'\t{result[1]:0.4f}')
 
 
 if __name__ == "__main__":
