@@ -1,31 +1,9 @@
-# Что Не Так Со Сравнениями Моделей Распознавания Текста Фото? Анализ набора данных и модели
+# Распознавание текста с изображения
 
 Официальная реализация PyTorch нашей четырехэтапной структуры STR, в которую вписывается большинство существующих моделей STR. <br>
 Использование этой структуры позволяет вносить вклад в производительность по модулю с точки зрения точности, скорости и потребности в памяти в рамках одного согласованного набора из наборов данных для обучения и оценки. <br>
 Такой анализ устраняет препятствия для текущих сравнений, чтобы понять прирост производительности существующих модулей. <br><br>
 <img src="./figures/trade-off.png" width="1000" title="trade-off">
-
-### Загрузить набор данных imdb для обучения и оценки [здесь](https://www.dropbox.com/sh/i39abvnefllx2si/AAAbAYRvxzRp3cIE5HzqUw3ra?dl=0)
-data_lmdb_release.zip содержится ниже. <br>
-Обучающий датасет : [MJSynth (MJ)](http://www.robots.ox.ac.uk/~vgg/data/text/)[1] and [SynthText (ST)](http://www.robots.ox.ac.uk/~vgg/data/scenetext/)[2] \
-Валидационный датасет : the union of the training sets [IC13](http://rrc.cvc.uab.es/?ch=2)[3], [IC15](http://rrc.cvc.uab.es/?ch=4)[4], [IIIT](http://cvit.iiit.ac.in/projects/SceneTextUnderstanding/IIIT5K.html)[5], and [SVT](http://www.iapr-tc11.org/mediawiki/index.php/The_Street_View_Text_Dataset)[6].\
-Оценочный датасет : benchmark evaluation datasets, consist of [IIIT](http://cvit.iiit.ac.in/projects/SceneTextUnderstanding/IIIT5K.html)[5], [SVT](http://www.iapr-tc11.org/mediawiki/index.php/The_Street_View_Text_Dataset)[6], [IC03](http://www.iapr-tc11.org/mediawiki/index.php/ICDAR_2003_Robust_Reading_Competitions)[7], [IC13](http://rrc.cvc.uab.es/?ch=2)[3], [IC15](http://rrc.cvc.uab.es/?ch=4)[4], [SVTP](http://openaccess.thecvf.com/content_iccv_2013/papers/Phan_Recognizing_Text_with_2013_ICCV_paper.pdf)[8], and [CUTE](http://cs-chan.com/downloads_CUTE80_dataset.html)[9].
-
-#### Предсказывание результата
-
-| Пример изображения                                            | [TRBA (**T**PS-**R**esNet-**B**iLSTM-**A**ttn)](https://drive.google.com/open?id=1b59rXuGGmKne1AuHnkgDzoYgKeETNMv9) | [TRBA (case-sensitive version)](https://drive.google.com/open?id=1ajONZOgiG9pEYsQ-eBmgkVbMDuHgPCaY) |
-|---------------------------------------------------------------|     ---      |          --- |
-| <img src="./demo_image/demo_1.png" width="300">               |   available   |  Available   |
-| <img src="./demo_image/demo_2.jpg" width="300">               |    shakeshack    |   SHARESHACK    |
-| <img src="./demo_image/demo_3.png" width="300">               |   london   |  Londen   |
-| <img src="./demo_image/demo_4.png" width="300">               |    greenstead    |   Greenstead    |
-| <img src="./demo_image/demo_5.png" width="300" height="100">  |   toast   |  TOAST   |
-| <img src="./demo_image/demo_6.png" width="300" height="100">  |    merry    |   MERRY    |
-| <img src="./demo_image/demo_7.png" width="300">               |   underground   |   underground  |
-| <img src="./demo_image/demo_8.jpg" width="300">               |    ronaldo    |    RONALDO   |
-| <img src="./demo_image/demo_9.jpg" width="300" height="100">  |   bally   |   BALLY  |
-| <img src="./demo_image/demo_10.jpg" width="300" height="100"> |    university    |   UNIVERSITY    |
-
 
 ### Обучение и оценка
 1. обучение CRNN[10] модели
@@ -43,7 +21,7 @@ CUDA_VISIBLE_DEVICES=0 python3 test.py \
 --saved_model saved_models/None-VGG-BiLSTM-CTC-Seed1111/best_accuracy.pth
 ```
 
-3. Попробуйте обучить и протестировать нашу лучшую модель точности TRBA (**T**PS-**R**esNet-**B**iLSTM-**A**ttn) also. ([download pretrained model](https://drive.google.com/drive/folders/15WPsuPJDCzhp2SvYZLRj8mAlT3zmoAMW))
+3. Попробуйте обучить и протестировать нашу лучшую модель точности TRBA (**T**PS-**R**esNet-**B**iLSTM-**A**ttn).
 ```
 CUDA_VISIBLE_DEVICES=0 python3 train.py \
 --train_data data_lmdb_release/training --valid_data data_lmdb_release/validation \
@@ -57,7 +35,7 @@ CUDA_VISIBLE_DEVICES=0 python3 test.py \
 --saved_model saved_models/TPS-ResNet-BiLSTM-Attn-Seed1111/best_accuracy.pth
 ```
 
-### Arguments
+### Аргументы
 * `--train_data`: путь к папке с обучающим датасетом imdb.
 * `--valid_data`: путь к папке для проверки датасета imdb.
 * `--eval_data`: путь к папке для оценки (с test.py ) датасета lmdb.
@@ -106,6 +84,18 @@ test/word_3.png A
 Стартуем бота командой `\start`, дальше отправляем картинку форматом `*.png` или `*.jpg`. <br>
 Если бот смог распрсить картинку и определить текст на ней - он отправит ответным сообщением слово с картинки. <br>
 Если бот не смог распознать текст - отправить соответствующее сообщение об ошибке.
+
+## Демонстрация работы бота
+Для запуска бота пишем ему /start а потом прикрепляем фото с текстом
+
+1. Изображение с текстов “Available”.
+<img src="./figures/available.png" width="1000" title="trade-off">
+2. Изображение с текстом “shakeshack”.
+<img src="./figures/shakeshack.png" width="1000" title="trade-off">
+3. Изображение с текстом “MERRY”.
+<img src="./figures/merry.png" width="1000" title="trade-off">
+4. Изображение с текстом “helloworld”
+<img src="./figures/helloworld.png" width="1000" title="trade-off">
 
 ## Источники
 [1] M. Jaderberg, K. Simonyan, A. Vedaldi, and A. Zisserman. Synthetic data and artificial neural networks for natural scenetext  recognition. In Workshop on Deep Learning, NIPS, 2014. <br>
