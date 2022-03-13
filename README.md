@@ -5,6 +5,22 @@
 Такой анализ устраняет препятствия для текущих сравнений, чтобы понять прирост производительности существующих модулей. <br><br>
 <img src="./figures/trade-off.png" width="1000" title="trade-off">
 
+#### Предсказывание результата
+
+| Пример изображения                                            | [TRBA (**T**PS-**R**esNet-**B**iLSTM-**A**ttn)](https://drive.google.com/open?id=1b59rXuGGmKne1AuHnkgDzoYgKeETNMv9) |
+|---------------------------------------------------------------|     ---      |
+| <img src="./demo_image/demo_1.png" width="300">               |   available   |
+| <img src="./demo_image/demo_2.jpg" width="300">               |    shakeshack    |
+| <img src="./demo_image/demo_3.png" width="300">               |   london   |
+| <img src="./demo_image/demo_4.png" width="300">               |    greenstead    |
+| <img src="./demo_image/demo_5.png" width="300" height="100">  |   toast   |
+| <img src="./demo_image/demo_6.png" width="300" height="100">  |    merry    |
+| <img src="./demo_image/demo_7.png" width="300">               |   underground   |
+| <img src="./demo_image/demo_8.jpg" width="300">               |    ronaldo    |
+| <img src="./demo_image/demo_9.jpg" width="300" height="100">  |   bally   |
+| <img src="./demo_image/demo_10.jpg" width="300" height="100"> |    university    |
+
+
 ### Обучение и оценка
 1. обучение CRNN[10] модели
 ```
